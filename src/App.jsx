@@ -53,6 +53,8 @@ function ProtectedRoute({ isAuthenticated }) {
 }
 
 function LandingPage({ isAuthenticated }) {
+  const ctaPath = isAuthenticated ? "/app" : "/login";
+
   return (
     <div className="landing-page">
       <header className="landing-nav">
@@ -71,19 +73,79 @@ function LandingPage({ isAuthenticated }) {
       </header>
 
       <section className="landing-hero card">
-        <p className="eyebrow">Analytics Workspace</p>
-        <h1>Track decisions, not just numbers.</h1>
-        <p>
-          PulseBoard gives your team a focused dashboard to monitor sales, revenue trends, and operational load in one
-          place.
-        </p>
-        <div className="landing-cta-row">
-          <Link to={isAuthenticated ? "/app" : "/login"} className="landing-btn">
-            {isAuthenticated ? "Open Dashboard" : "Get Started"}
-          </Link>
-          <Link to="/register" className="landing-link">
-            Create account
-          </Link>
+        <div className="landing-hero-copy">
+          <p className="eyebrow">Analytics Workspace</p>
+          <h1>Track decisions, not just numbers.</h1>
+          <p>
+            PulseBoard gives your team a focused dashboard to capture client input, compare month and year performance,
+            and generate report-ready outputs.
+          </p>
+          <div className="landing-cta-row">
+            <Link to={ctaPath} className="landing-btn">
+              {isAuthenticated ? "Open Dashboard" : "Get Started"}
+            </Link>
+            <Link to="/register" className="landing-link">
+              Create account
+            </Link>
+          </div>
+          <div className="landing-tag-row">
+            <span className="tag">Client Input</span>
+            <span className="tag">Live Charts</span>
+            <span className="tag">Instant Export</span>
+          </div>
+        </div>
+
+        <article className="landing-hero-panel">
+          <p className="landing-hero-panel-title">Live Workspace Snapshot</p>
+          <div className="hero-metric-grid">
+            <div className="hero-metric">
+              <span>12-Month Tracking</span>
+              <strong>Enabled</strong>
+            </div>
+            <div className="hero-metric">
+              <span>Report Formats</span>
+              <strong>TXT, CSV, JSON</strong>
+            </div>
+            <div className="hero-metric">
+              <span>Comparison Mode</span>
+              <strong>Month vs Year</strong>
+            </div>
+            <div className="hero-metric">
+              <span>Smart Actions</span>
+              <strong>One-Click Presets</strong>
+            </div>
+          </div>
+          <p className="landing-hero-panel-note">Designed for fast client delivery and mobile review.</p>
+        </article>
+      </section>
+
+      <section className="card landing-workflow">
+        <div className="landing-workflow-head">
+          <p className="eyebrow">Workflow</p>
+          <h2>From data entry to report download in 4 steps.</h2>
+        </div>
+
+        <div className="landing-step-grid">
+          <article className="landing-step-card">
+            <span className="landing-step-index">1</span>
+            <h3>Input</h3>
+            <p>Enter monthly sales, revenue, and user values in one place.</p>
+          </article>
+          <article className="landing-step-card">
+            <span className="landing-step-index">2</span>
+            <h3>Analyze</h3>
+            <p>View KPI cards, trend charts, and year-level comparisons instantly.</p>
+          </article>
+          <article className="landing-step-card">
+            <span className="landing-step-index">3</span>
+            <h3>Compare</h3>
+            <p>Track each month against full-year totals and average performance.</p>
+          </article>
+          <article className="landing-step-card">
+            <span className="landing-step-index">4</span>
+            <h3>Share</h3>
+            <p>Export reports in multiple formats for clients or internal teams.</p>
+          </article>
         </div>
       </section>
 
@@ -97,8 +159,30 @@ function LandingPage({ isAuthenticated }) {
           <p>Compare bar and line charts to understand trajectory and detect anomalies early.</p>
         </article>
         <article className="card landing-feature-card">
-          <h2>Team Visibility</h2>
-          <p>Balance utilization and reduce bottlenecks with a live view of member workload.</p>
+          <h2>Client Report Ready</h2>
+          <p>Generate client-friendly exports directly from the dashboard in one click.</p>
+        </article>
+        <article className="card landing-feature-card">
+          <h2>Month vs Year View</h2>
+          <p>Quickly see each month share of annual performance and average variance.</p>
+        </article>
+      </section>
+
+      <section className="landing-bottom-row">
+        <article className="card landing-highlight-card">
+          <h3>Advanced Controls When You Need Them</h3>
+          <p>Start in easy mode, then open advanced controls for range, metric focus, and smoothing.</p>
+          <Link to={ctaPath} className="landing-link">
+            Explore controls
+          </Link>
+        </article>
+
+        <article className="card landing-highlight-card">
+          <h3>Responsive for Desktop and Mobile</h3>
+          <p>Built for field updates on mobile and detailed review sessions on larger screens.</p>
+          <Link to="/register" className="landing-link">
+            Create workspace
+          </Link>
         </article>
       </section>
     </div>
@@ -289,6 +373,13 @@ function RegisterPage({ onRegister }) {
 }
 
 function DashboardLayout({ onLogout, user }) {
+  const navigate = useNavigate();
+
+  const handleLogoutClick = () => {
+    onLogout();
+    navigate("/", { replace: true });
+  };
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -312,7 +403,7 @@ function DashboardLayout({ onLogout, user }) {
 
         <div className="sidebar-footer">
           <p>{user?.name || "Signed in"}</p>
-          <button type="button" className="logout-btn" onClick={onLogout}>
+          <button type="button" className="logout-btn" onClick={handleLogoutClick}>
             Logout
           </button>
         </div>
